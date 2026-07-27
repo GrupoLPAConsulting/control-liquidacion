@@ -593,7 +593,8 @@ function parseWorkbook(sheets){
     if(!arr || !arr.length) continue;
     let hi = -1, col = null;
     for(let i=0;i<Math.min(arr.length,12);i++){
-      const row = (arr[i]||[]).map(c => String(c==null?'':c).toLowerCase());
+      const raw = arr[i]||[];
+      const row = Array.from({length: raw.length}, (_,k)=> String(raw[k]==null?'':raw[k]).toLowerCase());
       const iLeg = row.findIndex(c => c.includes('personal') || c.includes('legajo'));
       const iCC  = row.findIndex(c => c.includes('cc-n') || c.includes('cc n') || c==='cc' || c.includes('concepto'));
       const iImp = row.findIndex(c => c.includes('importe'));
@@ -1287,9 +1288,10 @@ async function handleFiles(list){
     try{
       const buf = await f.arrayBuffer();
       const sheets = await readXlsx(buf);
-      const rows = parseWorkbook(sheets);
-      if(rows.length){ FILES.push({name:f.name, rows}); continue; }
-      const pdata = parsePivot(sheets);
+      let rows = null, pdata = null, map = null;
+      try{ rows = parseWorkbook(sheets); }catch(e){ rows = null; }
+      if(rows && rows.length){ FILES.push({name:f.name, rows}); continue; }
+      try{ pdata = parsePivot(sheets); }catch(e){ pdata = null; }
       if(pdata){
         let per = adivinarPeriodo(f.name);
         per = prompt('El archivo "'+f.name+'" es una liquidación en formato resumen (una fila por legajo) y no indica el período.\n\n¿A qué período corresponde? Formato AAAAMM (ej.: 202607 = julio 2026):', per||'');
@@ -1298,8 +1300,8 @@ async function handleFiles(list){
         FILES.push({name:f.name, pivot:true, per, pdata, rows:[]});
         continue;
       }
-      const map = parseSapCat(sheets);
-      if(Object.keys(map).length>=5){ SAPCAT = map; persistCfg(); sapMsg = Object.keys(map).length; continue; }
+      try{ map = parseSapCat(sheets); }catch(e){ map = null; }
+      if(map && Object.keys(map).length>=5){ SAPCAT = map; persistCfg(); sapMsg = Object.keys(map).length; continue; }
       errs.push(f.name);
     }catch(err){ errs.push(f.name); }
   }
