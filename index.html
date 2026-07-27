@@ -115,7 +115,7 @@
 
 <header>
   <div class="brand">
-    <h1>Control de Liquidación <span class="tag">v2 · GANANCIAS · MOPRE · ESCALAS · ANTIGÜEDAD · CONVENIOS</span></h1>
+    <h1>Control de Liquidación <span class="tag">v2.1 · GANANCIAS · MOPRE · ESCALAS · ANTIGÜEDAD · CONVENIOS</span></h1>
     <p>FATLYF · APUAYE · Fuera de convenio — subí los volcados mensuales y el control corre solo</p>
   </div>
   <div class="spacer"></div>
@@ -138,7 +138,7 @@
   <section class="view active" id="v-resumen">
     <div class="drop" id="drop" tabindex="0" role="button" aria-label="Subir archivos">
       <h2>Arrastrá acá los archivos del mes (o hacé clic para elegirlos)</h2>
-      <p>Volcado crudo de liquidación en Excel — podés subir varios meses juntos para comparar. También acepta el export de categorías SAP (Nº pers. + GrProf): lo detecta solo.</p>
+      <p>Acepta liquidaciones en dos formatos: volcado crudo de SAP (una fila por concepto) o resumen/pivot (una fila por legajo, como el archivo de Control) — los detecta solos. También acepta el export de categorías SAP (Nº pers. + GrProf). Podés subir varios meses juntos para comparar.</p>
       <p class="fmt">Liquidación: Número de personal · Clase conv. · Período · CC-nómina · Importe &nbsp;·&nbsp; Categorías: Nº pers. · GrProf</p>
       <input type="file" id="fileInput" accept=".xlsx,.xls,.xlsm,.csv" multiple hidden>
     </div>
@@ -339,7 +339,7 @@ let CONFIG = {
   topesUrl: "data/topes.json",   /* URL del archivo de topes mantenido por el robot (GitHub). Editable en Parámetros. */
   topes: { "202604": 4162912.57, "202605": 4303619.01 },
   tasas: { gan: 35, sijp: 11, inssjp: 3, osoc: 3, antFA: 2, antAY: 1.6 },
-  aumentos: { "202604": 5, "202605": 3.5 },
+  aumentos: { "202604": 5, "202605": 3.5, "202606": 0, "202607": 5, "202608": 2.6 },
   tol: { basico: 1, antig: 0.02, c251: 0.01, porc: 0.1 },
   escalas: {
     "202604": {
@@ -369,6 +369,48 @@ let CONFIG = {
       UC:{b:3230162.843594,p:null,a1:83199.161707,a2:138657.948221},
       UD:{b:3672413.521595,p:null,a1:83199.161707,a2:138657.948221},
       UE:{b:4051790.540986,p:null,a1:83199.161707,a2:138657.948221}
+    },
+    "202606": {
+      LI:{b:1394838.185858,p:167380.582303,a1:56849.052272,a2:113698.104543},
+      LA:{b:1524646.564137,p:182957.587696,a1:56849.052272,a2:113698.104543},
+      LB:{b:1589550.753276,p:190746.090393,a1:56849.052272,a2:113698.104543},
+      LC:{b:1655508.318768,p:198660.998252,a1:56849.052272,a2:113698.104543},
+      LD:{b:1785316.697046,p:214238.003646,a1:56849.052272,a2:113698.104543},
+      LE:{b:1916178.451678,p:229941.414201,a1:56849.052272,a2:113698.104543},
+      LF:{b:2176808.070112,p:261216.968413,a1:56849.052272,a2:113698.104543},
+      UA:{b:2430182.710273,p:null,a1:83199.161707,a2:138657.948221},
+      UB:{b:2867118.654893,p:null,a1:83199.161707,a2:138657.948221},
+      UC:{b:3230162.843594,p:null,a1:83199.161707,a2:138657.948221},
+      UD:{b:3672413.521595,p:null,a1:83199.161707,a2:138657.948221},
+      UE:{b:4051790.540986,p:null,a1:83199.161707,a2:138657.948221}
+    },
+    "202607": {
+      LI:{b:1464580.095151,p:175749.611418,a1:59691.504885,a2:119383.009770},
+      LA:{b:1600878.892343,p:192105.467081,a1:59691.504885,a2:119383.009770},
+      LB:{b:1669028.290940,p:200283.394913,a1:59691.504885,a2:119383.009770},
+      LC:{b:1738283.734706,p:208594.048165,a1:59691.504885,a2:119383.009770},
+      LD:{b:1874582.531899,p:224949.903828,a1:59691.504885,a2:119383.009770},
+      LE:{b:2011987.374261,p:241438.484911,a1:59691.504885,a2:119383.009770},
+      LF:{b:2285648.473618,p:274277.816834,a1:59691.504885,a2:119383.009770},
+      UA:{b:2551691.845786,p:null,a1:87359.119793,a2:145590.845632},
+      UB:{b:3010474.587637,p:null,a1:87359.119793,a2:145590.845632},
+      UC:{b:3391670.985774,p:null,a1:87359.119793,a2:145590.845632},
+      UD:{b:3856034.197675,p:null,a1:87359.119793,a2:145590.845632},
+      UE:{b:4254380.068035,p:null,a1:87359.119793,a2:145590.845632}
+    },
+    "202608": {
+      LI:{b:1502659.177625,p:180319.101315,a1:61243.484012,a2:122486.968024},
+      LA:{b:1642501.743544,p:197100.209225,a1:61243.484012,a2:122486.968024},
+      LB:{b:1712423.026504,p:205490.763180,a1:61243.484012,a2:122486.968024},
+      LC:{b:1783479.111809,p:214017.493417,a1:61243.484012,a2:122486.968024},
+      LD:{b:1923321.677728,p:230798.601327,a1:61243.484012,a2:122486.968024},
+      LE:{b:2064299.045992,p:247715.885519,a1:61243.484012,a2:122486.968024},
+      LF:{b:2345075.333932,p:281409.040072,a1:61243.484012,a2:122486.968024},
+      UA:{b:2618035.833777,p:null,a1:89630.456907,a2:149376.207618},
+      UB:{b:3088746.926916,p:null,a1:89630.456907,a2:149376.207618},
+      UC:{b:3479854.431404,p:null,a1:89630.456907,a2:149376.207618},
+      UD:{b:3956291.086815,p:null,a1:89630.456907,a2:149376.207618},
+      UE:{b:4364993.949804,p:null,a1:89630.456907,a2:149376.207618}
     }
   }
 };
@@ -595,10 +637,80 @@ function parseSapCat(sheets){
   return map;
 }
 
+/* Liquidación en formato PIVOT (una fila por legajo, conceptos en columnas).
+   Detecta la fila de códigos (0001, 0040, /4T2…) y mapea columnas por código y nombre,
+   tolerando columnas extra o renombradas (CCT/Convenio Colectivo, Categ/Categoria, Años Antigüedad). */
+function parsePivot(sheets){
+  const isCode = v => /^(0\d{3}|9[A-Z0-9]{3}|\/\d{3}|\/4T2|\/109)$/.test(String(v==null?'':v).trim());
+  const num = v => {
+    if(v==null||v==='') return 0;
+    if(typeof v==='number') return v;
+    let s = String(v).trim().replace(/\s/g,'');
+    if(/,\d{1,2}$/.test(s)) s = s.replace(/\./g,'').replace(',','.');
+    const f = parseFloat(s); return isNaN(f)?0:f;
+  };
+  for(const sn in sheets){
+    const arr = sheets[sn];
+    if(!arr || arr.length<3) continue;
+    let ci = -1;
+    for(let i=0;i<Math.min(arr.length,10);i++){
+      const n = (arr[i]||[]).filter(c=>isCode(c)).length;
+      if(n>=10){ ci=i; break; }
+    }
+    if(ci<0) continue;
+    const codeRow = arr[ci], hdrRow = arr[ci+1]||[];
+    const codeMap = {};
+    codeRow.forEach((v,idx)=>{ if(isCode(v)) codeMap[idx]=String(v).trim(); });
+    const low = hdrRow.map(h=>String(h==null?'':h).toLowerCase());
+    const iLeg = low.findIndex(h=>h.includes('personal')||h.includes('legajo'));
+    const iConv= low.findIndex(h=>h.includes('conv')||h.trim()==='cct');
+    const iCat = low.findIndex(h=>h.includes('categ'));
+    const iAni = low.findIndex(h=>h.includes('antig')&&(h.includes('año')||h.includes('anos')));
+    if(iLeg<0) continue;
+    const pdata = {};
+    for(let i=ci+2;i<arr.length;i++){
+      const r = arr[i]; if(!r) continue;
+      let leg = r[iLeg]; if(leg==null||leg==='') continue;
+      leg = String(leg).trim().replace(/\.0$/,'');
+      if(!/^\d+$/.test(leg)) continue;
+      const cc = {};
+      for(const idx in codeMap){ const v = num(r[idx]); if(v) cc[codeMap[idx]] = v; }
+      pdata[leg] = {
+        conv: iConv>=0 ? String(r[iConv]==null?'':r[iConv]).trim() : '',
+        grp:  iCat>=0 ? String(r[iCat]==null?'':r[iCat]).trim().toUpperCase() : '',
+        anios: (iAni>=0 && r[iAni]!=null && r[iAni]!=='') ? num(r[iAni]) : null,
+        cc
+      };
+    }
+    if(Object.keys(pdata).length>=5) return pdata;
+  }
+  return null;
+}
+function adivinarPeriodo(nombre){
+  let m = nombre.match(/(20\d{2})[^\d]?(0[1-9]|1[0-2])(?!\d)/);
+  if(m) return m[1]+m[2];
+  m = nombre.match(/(0[1-9]|1[0-2])[^\d]?(20\d{2})/);
+  if(m) return m[2]+m[1];
+  return '';
+}
+
 /* ================= RECONSTRUCCIÓN ================= */
 function rebuild(){
   DATA = {};
   for(const f of FILES){
+    if(f.pivot){
+      if(!/^\d{6}$/.test(f.per||'')) continue;
+      (DATA[f.per] ||= {});
+      for(const leg in f.pdata){
+        const s = f.pdata[leg];
+        const e = (DATA[f.per][leg] ||= {conv:s.conv, cc:{}});
+        if(s.conv) e.conv = s.conv;
+        if(s.grp) e.grp = s.grp;
+        if(s.anios!=null) e.anios = s.anios;
+        for(const k in s.cc) e.cc[k] = (e.cc[k]||0) + s.cc[k];
+      }
+      continue;
+    }
     const cnt = {};
     for(const r of f.rows){ if(/^\d{6}$/.test(r.per)) cnt[r.per] = (cnt[r.per]||0)+1; }
     const per = Object.keys(cnt).sort((a,b)=>cnt[b]-cnt[a])[0];
@@ -646,7 +758,7 @@ function compute(){
         stMopre = (ex321>0.01||ex351>0.01||ex361>0.01) ? 'Excede Tope' : 'En regla';
       }
       /* --- Escala: básico / presentismo / antigüedad / 0041 --- */
-      const grp = SAPCAT[leg] || '';
+      const grp = e.grp || SAPCAT[leg] || '';
       const meta = ESC_META[grp] || null;
       const esc = (escPer && escPer[grp]) ? escPer[grp] : null;
       const bLiq = cc['0001']||0;
@@ -666,12 +778,19 @@ function compute(){
       else { pEsp = esc.p; stP = Math.abs(p306-pEsp)<=TOL.basico ? 'Coincide' : (p306<0.01 ? '⚠ No cobra (¿ausencias?)' : '⚠ Difiere del 12%'); }
       let anios=null, aniosR=null, stAnt;
       const tasaAnt = conv==='FA' ? T.antFA/100 : (conv==='AY' ? T.antAY/100 : null);
+      const aniosArch = (e.anios!=null && e.anios>0) ? e.anios : null;
       if(conv==='FC') stAnt='No aplica';
       else if(c40===0) stAnt='Sin antigüedad (0)';
       else if(stB!=='Coincide' || !esc) stAnt='No verificable (básico)';
       else {
-        anios = c40/(bEsc*tasaAnt); aniosR = Math.round(anios);
-        stAnt = Math.abs(anios-aniosR)<=TOL.antig ? 'OK (años enteros)' : '⚠ No entera — revisar';
+        anios = c40/(bEsc*tasaAnt);
+        if(aniosArch!=null){
+          aniosR = Math.round(aniosArch);
+          stAnt = Math.abs(c40 - bEsc*tasaAnt*aniosArch)<=TOL.basico ? 'OK (= años del archivo)' : '⚠ 0040 ≠ años del archivo';
+        } else {
+          aniosR = Math.round(anios);
+          stAnt = Math.abs(anios-aniosR)<=TOL.antig ? 'OK (años enteros)' : '⚠ No entera — revisar';
+        }
       }
       let adicEsp=null, st41;
       if(conv==='FC') st41='No aplica';
@@ -693,12 +812,13 @@ function compute(){
         c251prev = prevData[leg] ? (prevData[leg].cc['0251']||0) : 0;
         var251 = c251 - c251prev;
         if(c251prev<=0.01 && c251<=0.01) st251='Sin dato';
-        else if(Math.abs(var251)<=TOL.c251) st251='Sin cambios';
         else if(c251prev<=0.01) st251='⚠ Nuevo — revisar';
         else {
           pct251 = var251/c251prev;
-          if(aumPct==null) st251='Sin % paritaria';
-          else st251 = Math.abs(pct251-aumPct)<=TOL.porc/100 ? 'OK (= paritaria)' : '⚠ % distinto a paritaria';
+          if(aumPct==null) st251 = Math.abs(var251)<=TOL.c251 ? 'Sin cambios' : 'Sin % paritaria';
+          else if(Math.abs(pct251-aumPct)<=TOL.porc/100) st251='OK (= paritaria)';
+          else if(Math.abs(var251)<=TOL.c251) st251='⚠ Sin aumento — revisar';
+          else st251='⚠ % distinto a paritaria';
         }
       }
       /* --- Aumento de sueldo --- */
@@ -731,7 +851,7 @@ function stCls(s){
   if(s==null) return 'mut';
   if(s==='Supera 35%'||s==='Excede Tope') return 'bad';
   if(s.startsWith('⚠')){
-    if(s.includes('Mayor a escala')||s.includes('Difiere')||s.includes('No entera')||s.includes('Tramo incorrecto')||s.includes('Hs. extras en APUAYE')||s.includes('0468 fuera')) return 'bad';
+    if(s.includes('Mayor a escala')||s.includes('Difiere')||s.includes('No entera')||s.includes('≠')||s.includes('Tramo incorrecto')||s.includes('Hs. extras en APUAYE')||s.includes('0468 fuera')) return 'bad';
     return 'warn';
   }
   if(s.startsWith('OK')||s==='Coincide'||s==='En regla'||s==='Sin cambios') return 'ok';
@@ -753,13 +873,13 @@ function counts(per){
     bSin: c(r=>r.stB==='Sin escala — revisar'||r.stB==='Sin categoría SAP'||r.stB==='Sin escala del período'),
     presNo: c(r=>r.stP==='⚠ No cobra (¿ausencias?)'),
     presDif: c(r=>r.stP==='⚠ Difiere del 12%'),
-    antNE: c(r=>r.stAnt==='⚠ No entera — revisar'),
+    antNE: c(r=>r.stAnt && r.stAnt.startsWith('⚠')),
     tramo: c(r=>r.st41==='⚠ Tramo incorrecto'),
     f468fuera: c(r=>r.st468==='⚠ 0468 fuera de FATLYF'),
     f468falta: c(r=>r.st468==='⚠ FATLYF sin 0468'),
     c210: c(r=>r.st210.startsWith('⚠')),
     hsAY: c(r=>r.stHs.startsWith('⚠')),
-    c251d: c(r=>r.st251==='⚠ % distinto a paritaria'),
+    c251d: c(r=>r.st251==='⚠ % distinto a paritaria' || r.st251==='⚠ Sin aumento — revisar'),
     c251n: c(r=>r.st251==='⚠ Nuevo — revisar'),
     aumFC: c(r=>r.stAum==='⚠ FC: aumento menor a paritaria'),
     aumConv: c(r=>r.stAum==='⚠ Menor a paritaria — revisar')
@@ -836,13 +956,13 @@ function renderResumen(){
     card('Sin categoría / sin escala', c.bSin,'warn','Legajos que no se pudieron cruzar con la escala.','escala') +
     card('Presentismo: no cobra (FA)', c.presNo,'warn','0306 en cero; confirmar ausencias con RRHH.','escala') +
     card('Presentismo difiere (FA)', c.presDif,'bad','0306 distinto del 12% del básico de escala.','escala') +
-    card('Antigüedad no entera', c.antNE,'bad','El 0040 no da años enteros: básico o antigüedad mal.','escala') +
+    card('Antigüedad incorrecta', c.antNE,'bad','El 0040 no cierra con los años (derivados o del archivo).','escala') +
     card('0041: tramo incorrecto', c.tramo,'bad','Adicional por antigüedad distinto del tramo (≥10 / ≥25).','escala') +
     card('0468 fuera de FATLYF', c.f468fuera,'bad','No remunerativo 0468 en convenio que no es FA.','auditoria') +
     card('FATLYF sin 0468', c.f468falta,'warn','Legajo FA activo al que le falta el 0468.','auditoria') +
     card('0210 fuera de APUAYE', c.c210,'warn','Serv. Extraordinario (hora extra AY) en otro convenio.','auditoria') +
     card('Hs. extras en APUAYE', c.hsAY,'bad','AY con 0308/0309/0310: no corresponde (usan 0210).','auditoria') +
-    card('0251: % distinto a paritaria', c.c251d,'warn','A Cta. Fut. Aumentos no subió el % del período.','auditoria') +
+    card('0251: no siguió la paritaria', c.c251d,'warn','Sin aumento o % distinto al del período.','auditoria') +
     card('0251: nuevo', c.c251n,'warn','Apareció 0251 sin valor el mes anterior.','auditoria') +
     card('Aumento FC menor a paritaria', c.aumFC,'warn','Fuera de convenio con aumento menor al % del período.','aumentos') +
     card('Aumento menor (convenio)', c.aumConv,'warn','FA/AY con aumento menor a paritaria; revisar.','aumentos');
@@ -941,7 +1061,7 @@ function renderAum(){
 
 function renderFiles(){
   $('#filelist').innerHTML = FILES.map((f,i)=>
-    `<span class="fchip"><b>${f.name}</b><span class="n">${f.per? perLabel(f.per) : 'período no detectado'} · ${f.rows.length.toLocaleString('es-AR')} registros</span><button title="Quitar" data-i="${i}">✕</button></span>`).join('');
+    `<span class="fchip"><b>${f.name}</b><span class="n">${f.per? perLabel(f.per) : 'período no detectado'} · ${f.pivot? Object.keys(f.pdata).length.toLocaleString('es-AR')+' legajos (resumen)' : f.rows.length.toLocaleString('es-AR')+' registros'}</span><button title="Quitar" data-i="${i}">✕</button></span>`).join('');
   $('#filelist').querySelectorAll('button').forEach(b=>b.onclick=()=>{ FILES.splice(+b.dataset.i,1); rebuild(); });
 }
 function renderSapInfo(){
@@ -1113,7 +1233,7 @@ function renderDic(){
 $('#btnExport').onclick = ()=>{
   if(!PERIODOS.length){ alert('Primero subí al menos un archivo de liquidación.'); return; }
   const sheets = [];
-  const res = [['Período','Legajos','Ganancias >35%','MOPRE excede','Básico mayor','Básico menor (prop.)','Sin cat./escala','Present. no cobra','Present. difiere','Antig. no entera','0041 tramo','0468 fuera','FA sin 0468','0210 fuera AY','Hs.ex. en AY','0251 % dist.','0251 nuevo','Aum. FC < parit.','Aum. conv. < parit.','Tope MOPRE','Paritaria %']];
+  const res = [['Período','Legajos','Ganancias >35%','MOPRE excede','Básico mayor','Básico menor (prop.)','Sin cat./escala','Present. no cobra','Present. difiere','Antig. no entera','0041 tramo','0468 fuera','FA sin 0468','0210 fuera AY','Hs.ex. en AY','0251 no sigue parit.','0251 nuevo','Aum. FC < parit.','Aum. conv. < parit.','Tope MOPRE','Paritaria %']];
   for(const p of PERIODOS){ const c = counts(p);
     res.push([perLabel(p)+' ('+p+')', c.legajos, c.gan, c.sinTope?'SIN TOPE':c.mopre, c.bMayor, c.bMenor, c.bSin, c.presNo, c.presDif, c.antNE, c.tramo, c.f468fuera, c.f468falta, c.c210, c.hsAY, c.c251d, c.c251n, c.aumFC, c.aumConv, CONFIG.topes[p]??'—', CONFIG.aumentos[p]??'—']); }
   sheets.push({name:'Resumen', aoa:res});
@@ -1169,6 +1289,15 @@ async function handleFiles(list){
       const sheets = await readXlsx(buf);
       const rows = parseWorkbook(sheets);
       if(rows.length){ FILES.push({name:f.name, rows}); continue; }
+      const pdata = parsePivot(sheets);
+      if(pdata){
+        let per = adivinarPeriodo(f.name);
+        per = prompt('El archivo "'+f.name+'" es una liquidación en formato resumen (una fila por legajo) y no indica el período.\n\n¿A qué período corresponde? Formato AAAAMM (ej.: 202607 = julio 2026):', per||'');
+        per = (per||'').trim();
+        if(!/^\d{6}$/.test(per)){ errs.push(f.name+' (sin período — se descartó)'); continue; }
+        FILES.push({name:f.name, pivot:true, per, pdata, rows:[]});
+        continue;
+      }
       const map = parseSapCat(sheets);
       if(Object.keys(map).length>=5){ SAPCAT = map; persistCfg(); sapMsg = Object.keys(map).length; continue; }
       errs.push(f.name);
