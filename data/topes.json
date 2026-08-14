@@ -1,5 +1,5 @@
 {
- "actualizado": "2026-08-13T13:43:28+00:00",
+ "actualizado": "2026-08-14T13:38:39+00:00",
  "alertas": [],
  "topes": {
   "202604": {
@@ -23,8 +23,8 @@
    "valor": 4509567.41
   },
   "202608": {
-   "estado": "estimado",
-   "fuente": "calculado por movilidad (IPC 2026-06: 1.89%)",
+   "estado": "confirmado",
+   "fuente": "calculado por movilidad (IPC 2026-06: 1.89%) · confirmado por IMSS",
    "valor": 4594798.23
   }
  }
