@@ -1,8 +1,6 @@
 {
- "actualizado": "2026-10-11T17:40:08+00:00",
- "alertas": [
-  "El método por IPC no pasó el autotest este mes: no se estimó ningún período nuevo. Cargar el tope a mano si hace falta."
- ],
+ "actualizado": "2026-10-12T21:14:45+00:00",
+ "alertas": [],
  "topes": {
   "202604": {
    "estado": "confirmado",
