@@ -1,6 +1,8 @@
 {
- "actualizado": "2026-10-12T21:14:45+00:00",
- "alertas": [],
+ "actualizado": "2026-10-13T19:13:29+00:00",
+ "alertas": [
+  "El método por IPC no pasó el autotest este mes: no se estimó ningún período nuevo. Cargar el tope a mano si hace falta."
+ ],
  "topes": {
   "202604": {
    "estado": "confirmado",
@@ -33,8 +35,8 @@
    "valor": 4691748.47
   },
   "202610": {
-   "estado": "estimado",
-   "fuente": "calculado por movilidad (IPC 2026-08: 1.66%)",
+   "estado": "confirmado",
+   "fuente": "calculado por movilidad (IPC 2026-08: 1.66%) · confirmado por IMSS",
    "valor": 4769631.49
   }
  }
