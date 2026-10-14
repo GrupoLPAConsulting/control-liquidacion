@@ -4,6 +4,8 @@ Aplicación web para auditar automáticamente las liquidaciones mensuales de sue
 
 **App publicada:** https://grupolpaconsulting.github.io/control-liquidacion/ *(acceso protegido con contraseña)*
 
+**Versión actual:** 4.6.9
+
 ---
 
 ## Qué problema resuelve
@@ -21,7 +23,7 @@ Esta decisión de diseño fue deliberada y tiene consecuencias importantes:
 - **Los datos de los empleados nunca salen de la computadora del usuario.** Los archivos de liquidación se procesan localmente; nada se envía a un servidor.
 - **Funciona sin conexión a internet**, una vez descargado.
 - **No depende de librerías externas.** El archivo escribe y lee XLSX con un parser propio (formato ZIP + XML), y usa las APIs nativas del navegador (`DecompressionStream`, `IndexedDB`, `Web Crypto`) en vez de paquetes de terceros.
-- La contrapartida: no hay multiusuario real ni historial compartido entre personas — cada instalación vive en el navegador de quien la usa. Ver [Próximos pasos](#próximos-pasos-y-decisiones-pendientes).
+- El historial local puede trasladarse entre instalaciones mediante un respaldo completo sin cifrar. El respaldo guarda sólo datos de entrada y parámetros; la versión que lo restaura vuelve a calcular todos los resultados con sus propias reglas.
 
 ## Qué controla
 
@@ -33,15 +35,19 @@ La app aplica los siguientes controles sobre cada legajo, comparando el mes carg
 | 2 | **Tope MOPRE** | Aportes `/321` `/351` `/361` por encima del tope legal del período |
 | 3 | **Tope MOPRE sobre SAC** | En meses de aguinaldo, aportes `/325` `/355` `/365` contra la mitad del tope |
 | 4 | **Básico vs. escala** | El básico liquidado no coincide con el oficial de la categoría |
-| 5 | **Presentismo** (FATLYF) | No cobra el 12% de escala, o el valor difiere |
+| 5 | **Presentismo** (FATLYF) | Audita 0306/0385 únicamente cuando alguno viene informado; la ausencia de ambos no genera aviso |
 | 6 | **Antigüedad** | Años derivados del adicional no dan un número entero; tramo del adicional incorrecto |
 | 7 | **Concepto 0468** | No remunerativo exclusivo de FATLYF liquidado fuera de convenio, o ausente donde corresponde |
-| 8 | **Servicio Extraordinario (0210)** | En FATLYF, debe ser el 11% del básico de escala; en APUAYE, hora extra variable (no se controla importe) |
-| 9 | **0251 (A Cta. Futuros Aumentos)** | No acompañó el % de la última paritaria |
-| 10 | **0022 (Asignación Personal)** | Mismo control que el anterior |
-| 11 | **Aumentos por convenio** | El sueldo no reflejó la paritaria del período |
+| 8 | **Servicio Extraordinario (0210)** | FATLYF: 11% del básico; APUAYE: valores A/B de escala (14% o 42%) |
+| 9 | **Horas extra 0308/0309** | Recalcula cantidad, base, factor y divisor real de HTrab; 0310 queda expresamente informativo |
+| 10 | **Vacaciones** | Recalcula `/109`, `0316` y `9322` con RNHyP, bono técnico y seis meses de origen HE previos; aclara el desfase entre origen y pago |
+| 11 | **Bono para vacaciones** | APUAYE usa 9RAV; FATLYF y FC usan 99BA; separa movimientos `000000` |
+| 12 | **Embargos y cuotas alimentarias** | Aplica el porcentaje informado y las bases documentadas para cada CC-nómina |
+| 13 | **0251 y 0022** | Controla que acompañen el % de la paritaria |
+| 14 | **Aumentos por convenio** | Distingue faltantes, aumentos menores y posibles recategorizaciones |
+| 15 | **Retroactivos y bajas** | Imputa retroactivos de HE a su período de origen y neutraliza liquidaciones finales detectadas por `/114` o `/T53` |
 
-La clasificación de conceptos en remunerativos / no remunerativos / descuentos se lee dinámicamente de cada archivo cargado (usa las columnas `TOTAL REM` / `TOTAL NO REM` / `TOTAL DESC` del propio archivo), con una lista de respaldo fija para archivos en formato crudo que no traen esos marcadores.
+La clasificación de conceptos en remunerativos / no remunerativos / descuentos se lee dinámicamente de las hojas Control cargadas y se acumula como historial. Un concepto nuevo queda disponible en los meses siguientes; si cambia de grupo, prevalece la clasificación más reciente. Existe además una lista de respaldo fija para archivos crudos sin marcadores.
 
 ## Convenios soportados
 
@@ -54,10 +60,13 @@ Cada uno con sus propias reglas de escala, antigüedad y conceptos de convenio.
 ## Funcionalidades principales
 
 - **Lectura flexible de archivos:** acepta tanto el volcado crudo de SAP como el formato resumen/pivot de un archivo de control, detectando automáticamente cuál es.
-- **Escalas salariales con historial:** se cargan subiendo el archivo oficial del convenio (Excel con una hoja por período); la app detecta los meses que trae y pide confirmar el período de cada uno. Quedan guardadas sin pisar las anteriores.
+- **Escalas salariales con historial:** se cargan subiendo el archivo oficial del convenio (Excel con una hoja por período); la app detecta los meses que trae y pide confirmar el período de cada uno. Quedan guardadas sin pisar las anteriores y la última continúa vigente hasta una actualización. Si no se informa la paritaria, se calcula desde la nueva escala o se aplica 0% cuando no hubo cambio de escala.
 - **Parámetros protegidos:** topes, tasas y escalas están en solo lectura por defecto, con un botón explícito de "Habilitar edición" para evitar modificaciones accidentales.
 - **Historial de meses:** al cargar un mes, la app ofrece guardarlo en el navegador (`IndexedDB`) para no tener que volver a subir el archivo en sesiones futuras. Es opt-in: se pregunta antes de guardar, y hay una pantalla dedicada para ver y borrar lo guardado.
+- **Respaldo completo portable:** descarga y restaura meses, Queries, escalas, topes, paritarias, categorías y parámetros. Valida integridad, evita sobrescribir períodos locales en conflicto, crea una copia previa y recalcula con la versión actual. El archivo es deliberadamente sin cifrar.
+- **Lectura XLSX ampliada:** admite libros con o sin prefijos de espacios de nombres XML y conserva los ceros iniciales de las CC-nómina (`0001`, `0316`, etc.).
 - **Exportación a Excel:** genera un informe formateado (colores por severidad, columnas dimensionadas, filtros, hoja de metodología) del mes más reciente cargado, usando el anterior como referencia. Es un escritor de XLSX construido a mano, sin librerías.
+- **Avisos sin falsos rojos:** los centavos de embargos se tratan como redondeo; la ausencia de presentismo no genera aviso; las altas y los cambios de categoría confirmados quedan explicados, y las variaciones salariales FC no confirmadas permanecen visibles.
 - **Actualización automática del tope MOPRE:** un workflow de GitHub Actions (`actualizar-tope.yml`) corre periódicamente, lee la resolución oficial de ANSES y confirma el tope por dos vías independientes (scraping de la página oficial + cálculo por fórmula de movilidad). La app lee ese archivo (`data/topes.json`) al abrirse con conexión.
 
 ## Seguridad y acceso
@@ -82,8 +91,8 @@ Esta combinación es adecuada para el estado actual (uso por una o pocas persona
 Estos puntos requieren decisión de negocio / infraestructura, no son bugs:
 
 - **Multiusuario con login por correo.** Requiere backend (servidor + base de datos), lo cual implica decidir dónde vive esa infraestructura — nube de terceros vs. servidor interno de la empresa — dado que implicaría alojar datos de sueldos fuera de la computadora del usuario. Es el cambio de arquitectura más importante si el proyecto escala a varias personas o empresas.
-- **Control de horas extras / tope de 30 h mensuales.** La fórmula del valor-hora (qué conceptos suman a la base y qué divisor corresponde, 176 u 184 según régimen horario) fue reconstruida y verificada contra datos reales de SAP (transacción `PC_PAYRESULT`) para FATLYF y Fuera de Convenio. Pendiente de implementar el control en la app.
-- **Control de embargos.** Hay una hoja de referencia con los conceptos y bases de cálculo, pero requiere el dato del porcentaje/importe que ordena cada juzgado por legajo (vive en SAP, infotipos 14/15), que hoy no está disponible para cruzar automáticamente.
+- **Vacaciones en meses consecutivos.** Se mantienen visibles como revisión hasta confirmar con Victoria si SAP cambia la selección de la ventana de horas extra o aplica otro criterio.
+- **Rama 0212.** Se conserva la lectura respaldada por la escala y los datos reales; cualquier cambio adicional requiere definición de negocio.
 - **Dominio propio.** La URL actual depende de la cuenta de GitHub; para un despliegue institucional conviene evaluar un dominio propio de LPA Consulting.
 
 ## Stack técnico
@@ -97,8 +106,8 @@ Estos puntos requieren decisión de negocio / infraestructura, no son bugs:
 
 ## Historial de versiones
 
-La app usa un número de versión visible en el encabezado para verificar que un despliegue se aplicó correctamente. Evolucionó de v2.1 a v3.0 de forma incremental, con cada control validado contra archivos reales de liquidación (comparación al centavo, cientos de legajos) antes de darse por cerrado.
+La versión actual es **v4.6.9**. Es una actualización de mantenimiento sobre la v4.6.8: conserva todas las fórmulas y reglas validadas y corrige la fuente usada en las pruebas de septiembre. La aceptación se ejecuta con la CWTR final del 30/09/2026, donde el embargo 0995 del legajo 5411 cierra al centavo y el concepto 9322 se clasifica como no remunerativo. Para vacaciones se mantienen los seis meses de origen marzo–agosto, equivalentes a pagos abril–septiembre. La distribución incluye `Control_Liquidacion.exe`, nombre fijo recomendado para el acceso directo compartido.
 
 ## Créditos
 
-Desarrollado para LPA Consulting. Auditoría de nóminas y definición de reglas de negocio: Sergio García, bajo supervisión de Victoria Croulliere. Implementación: asistida por Claude (Anthropic).
+Desarrollado para LPA Consulting. Auditoría de nóminas y definición de reglas de negocio: Sergio García, bajo supervisión de Victoria Croulliere. Implementación asistida por IA y validada contra archivos reales de SAP.
