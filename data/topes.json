@@ -1,5 +1,5 @@
 {
- "actualizado": "2026-11-12T19:51:39+00:00",
+ "actualizado": "2026-11-13T19:36:45+00:00",
  "alertas": [],
  "topes": {
   "202604": {
@@ -36,6 +36,16 @@
    "estado": "confirmado",
    "fuente": "calculado por movilidad (IPC 2026-08: 1.66%) · confirmado por IMSS",
    "valor": 4769631.49
+  },
+  "202611": {
+   "estado": "confirmado",
+   "fuente": "IMSS (oficial, redondeado a pesos)",
+   "valor": 4861685.0
+  },
+  "202612": {
+   "estado": "estimado",
+   "fuente": "calculado por movilidad (IPC 2026-10: 2.17%)",
+   "valor": 4967183.56
   }
  }
 }
